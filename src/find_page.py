@@ -5,7 +5,7 @@ from mysql import *
 
 
 def get_company(page_url):
-    html = get_html(page_url)
+    html = get_html(page_url, 0)
     soup = BeautifulSoup(html, 'html.parser')
     # print(html)
 

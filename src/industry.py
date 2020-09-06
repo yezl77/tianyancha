@@ -49,6 +49,12 @@ industry_href_list = ["https://www.tianyancha.com/search/oc45", "https://www.tia
                       "https://www.tianyancha.com/search/oc89", "https://www.tianyancha.com/search/oc86",
                       "https://www.tianyancha.com/search/oc87", "https://www.tianyancha.com/search/oc85"]
 
+province_list = ['?base=bj', '?base=sh', '?base=tj', '?base=cq', '?base=heb', '?base=sx', '?base=nmg', '?base=ln',
+                 '?base=jl', '?base=hlj', '?base=js', '?base=zj', '?base=ah', '?base=fj', '?base=jx', '?base=sd',
+                 '?base=hen', '?base=hub', '?base=hun', '?base=gd', '?base=gx', '?base=sc', '?base=gz', '?base=yn',
+                 '?base=han', '?base=snx', '?base=gs', '?base=nx', '?base=qh', '?base=xj', '?base=xz', '?base=hk',
+                 '?base=mo', '?base=tw']
+
 industry_name_list = ["燃气生产和供应业", "电力、热力生产和供应业", "水的生产和供应业", "建筑安装业", "土木工程建筑业", "房屋建筑业", "建筑装饰和其他建筑业", "批发业", "零售业",
                       "仓储业", "装卸搬运和运输代理业", "管道运输业", "航空运输业", "水上运输业", "邮政业", "铁路运输业", "道路运输业", "渔业", "农、林、牧、渔服务业", "农业",
                       "林业", "畜牧业", "开采辅助活动", "其他采矿业", "黑色金属矿采选业", "有色金属矿采选业", "煤炭开采和洗选业", "石油和天然气开采业", "非金属矿采选业",
@@ -62,9 +68,8 @@ industry_name_list = ["燃气生产和供应业", "电力、热力生产和供�
                       "教育", "基层群众自治组织", "群众团体、社会团体和其他成员组织", "社会保障", "人民政协、民主党派", "国家机构", "中国共产党机关", "体育", "娱乐业",
                       "广播、电视、电影和影视录音制作业", "文化艺术业", "新闻和出版业"]
 
-sql = "insert into t_industry(industry, href, flag) values ('%s', '%s', '%d')"
-
-for i in range(96):
-    for p in ["", "/p2", "/p3", "/p4", "/p5"]:
-        data = (industry_name_list[i], industry_href_list[i]+p, False)
-        insert(sql, data)
+# sql = "insert into t_industry(industry, href, flag) values ('%s', '%s', '%d')"
+#
+# for i in range(96):
+#     for p in ["", "/p2", "/p3", "/p4", "/p5"]:
+#         data = (industry_name_list[i], industry_href_list[i] + p, False)

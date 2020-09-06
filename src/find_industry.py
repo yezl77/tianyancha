@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 with open("test1.html", encoding="UTF-8", mode='r') as f, \
         open("industry.py", encoding="UTF-8", mode='a+') as f1:
     html = f.read()
