@@ -56,3 +56,55 @@ CREATE TABLE t_company (
 	flag  tinyint(1)  comment "是否查找完毕",
     PRIMARY KEY ( id )
 )
+
+CREATE TABLE `t_industry`  (
+  `industry` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '行业',
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '行业url',
+  `flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否完成'
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+
+CREATE TABLE `t_industry_province`  (
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分页链接',
+  `flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否爬过',
+  PRIMARY KEY (`href`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
+-- Table structure for t_industry_province_city
+-- ----------------------------
+DROP TABLE IF EXISTS `t_industry_province_city`;
+CREATE TABLE `t_industry_province_city`  (
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分页链接',
+  `flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否爬过',
+  PRIMARY KEY (`href`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- ----------------------------
+-- Table structure for t_industry_province_city_qu
+-- ----------------------------
+DROP TABLE IF EXISTS `t_industry_province_city_qu`;
+CREATE TABLE `t_industry_province_city_qu`  (
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分页链接',
+  `flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否爬过',
+  PRIMARY KEY (`href`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- ----------------------------
+-- Table structure for t_industry_province_city_qu_page
+-- ----------------------------
+DROP TABLE IF EXISTS `t_industry_province_city_qu_page`;
+CREATE TABLE `t_industry_province_city_qu_page`  (
+  `href` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '分页链接',
+  `flag` tinyint(1) NULL DEFAULT NULL COMMENT '是否爬过',
+  PRIMARY KEY (`href`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
