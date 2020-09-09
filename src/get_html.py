@@ -3,15 +3,18 @@ import requests
 import time
 
 cursor = 0
-get_proxy_url = "http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=0f92c648502243789158057e3e5856da&count=5&expiryDate=0&format=2&newLine=1"
+get_proxy_url = "http://piping.mogumiao.com/proxy/api/get_ip_al?appKey=a35eb4a35d654c09a7a75ca397715c7e&count=10&expiryDate=0&format=2&newLine=1"
 proxy_id_list = []
 proxy_id = ""
+
+free_ip = "https://ip.jiangxianli.com/api/proxy_ip"
 
 
 # 请求url的html内容
 def get_html(url, count):
-    if count > 10:
-        print("重试超过10次：建议停机检查：", url)
+    if count > 5:
+        print("重试超过5次：建议停机检查：", url)
+        return ""
         # exit(1)
     # time.sleep(1)
     print("爬取此网页：", url, "次数：", count, " 代理IP：", proxy_id)
@@ -51,13 +54,23 @@ def get_html(url, count):
         return response.text
 
 
+# def refresh_proxy_ip():
+#     global proxy_id
+#     global proxy_id_list
+#     if len(proxy_id_list) < 5:
+#         for p_id in requests.get(get_proxy_url).text.split(" "):
+#             proxy_id_list.append(p_id)
+#         time.sleep(1)
+#     proxy_id = proxy_id_list.pop(0)
+#     # proxy_id = requests.get(get_proxy_url).text.replace(" ", "")
+#     print('代理ip请求异常，更换代理IP:http://' + proxy_id + "/")
+
+
 def refresh_proxy_ip():
     global proxy_id
     global proxy_id_list
-    if len(proxy_id_list) < 5:
-        for p_id in requests.get(get_proxy_url).text.split(" "):
-            proxy_id_list.append(p_id)
-        time.sleep(1)
+    time.sleep(1)
+    requests.get(free_ip)
     proxy_id = proxy_id_list.pop(0)
     # proxy_id = requests.get(get_proxy_url).text.replace(" ", "")
     print('代理ip请求异常，更换代理IP:http://' + proxy_id + "/")

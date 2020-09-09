@@ -167,10 +167,10 @@ def get_company_info_to_mysql():
 if __name__ == '__main__':
     # 一步 一步  爬取所有天眼查所有公司，极其变态
     # 把数据库表建好，然后跑这个程序，下面五个可以分五条线程 按先后顺序启动 即可
-    get_city_to_mysql()
-    get_qu_to_mysql()
-    get_page_to_mysql()
-    get_company_to_mysql()
+    # get_city_to_mysql()
+    # get_qu_to_mysql()
+    # get_page_to_mysql()
+    # get_company_to_mysql()
     get_company_info_to_mysql()
 
 

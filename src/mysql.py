@@ -24,7 +24,7 @@ def excute(sql, data):
         data_list[i] = data_list[i].replace('\'', "\\'")
     data = tuple(data_list)
     sqldata = sql % data
-    print(sqldata)
+    # print(sqldata)
     # print(sqldata)
     # escape_string_sql = pymysql.escape_string(sqldata)
     # print(escape_string_sql)
@@ -92,14 +92,14 @@ def get_todo_industry():
 
 
 def get_todo_company():
-    sql = 'select id from t_company where flag = false'
+    sql = 'select id from t_company where flag = false limit 0,100'
     cursor.execute(sql)
     todo_href_list = cursor.fetchall()
     return todo_href_list
 
 
 def get_todo_company_limit():
-    sql = 'select id from t_company where flag = false limit 100'
+    sql = 'select id from t_company where flag = false limit 300,100'
     cursor.execute(sql)
     todo_href_list = cursor.fetchall()
     return todo_href_list

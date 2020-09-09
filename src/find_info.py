@@ -5,7 +5,7 @@ from get_html import *
 
 
 def get_info(url, count):
-    if count > 10:
+    if count > 3:
         print("重试超过10次：建议停机检查：", url)
         return True
     html = get_html(url, count)
