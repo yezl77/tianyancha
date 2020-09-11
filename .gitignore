@@ -1,0 +1,6 @@
+*.html
+*.pyc
+*.yaml
+*.log
+.idea/
+tkcode.png
