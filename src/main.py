@@ -135,7 +135,7 @@ def get_qu_to_mysql():
 # 爬取 行业 -> 省份直辖市 -> 市 -> 所有分页 所有的链接 存到mysql
 def get_page_to_mysql():
     todo_url_list = get_todo_industry_province_city_qu()
-    while len(todo_url_list) >0:
+    while len(todo_url_list) > 0:
         for todo_url in todo_url_list:
             print("开始爬取未爬的区县：", todo_url['href'])
             get_page(todo_url['href'])

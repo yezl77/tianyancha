@@ -6,8 +6,11 @@ cursor = 0
 get_proxy_url = "http://piping.mogumiao.com/proxy/api/get_ip_al?appKey=a35eb4a35d654c09a7a75ca397715c7e&count=10&expiryDate=0&format=2&newLine=1"
 proxy_id_list = []
 proxy_id = ""
+proxy_page = 0
 
 free_ip = "https://ip.jiangxianli.com/api/proxy_ip"
+
+free_ips = "https://ip.jiangxianli.com/api/proxy_ips?page="
 
 
 # 请求url的html内容
@@ -38,8 +41,8 @@ def get_html(url, count):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
     }
     try:
-        # response = requests.get(url, headers=headers, proxies=proxy)
-        response = requests.get(url, headers=headers, proxies=proxy, timeout=5)
+        response = requests.get(url, headers=headers)
+        # response = requests.get(url, headers=headers, proxies=proxy, timeout=5)
     except BaseException:
         print("异常发生")
         # 这里没有对异常情况作具体处理，只是直接换代理IP 重新请求 就完事昂
@@ -54,27 +57,41 @@ def get_html(url, count):
         return response.text
 
 
-# def refresh_proxy_ip():
-#     global proxy_id
-#     global proxy_id_list
-#     if len(proxy_id_list) < 5:
-#         for p_id in requests.get(get_proxy_url).text.split(" "):
-#             proxy_id_list.append(p_id)
-#         time.sleep(1)
-#     proxy_id = proxy_id_list.pop(0)
-#     # proxy_id = requests.get(get_proxy_url).text.replace(" ", "")
-#     print('代理ip请求异常，更换代理IP:http://' + proxy_id + "/")
-
-
 def refresh_proxy_ip():
     global proxy_id
     global proxy_id_list
-    time.sleep(1)
-    requests.get(free_ip)
+    if len(proxy_id_list) < 5:
+        for p_id in requests.get(get_proxy_url).text.split(" "):
+            proxy_id_list.append(p_id)
+        time.sleep(1)
     proxy_id = proxy_id_list.pop(0)
     # proxy_id = requests.get(get_proxy_url).text.replace(" ", "")
     print('代理ip请求异常，更换代理IP:http://' + proxy_id + "/")
 
+
+def refresh_proxy_ip_free():
+    global proxy_id
+    global proxy_id_list
+    if len(proxy_id_list) < 15:
+        for d in get_free_proxy():
+            proxy_id_list.append(d["ip"]+":"+d["port"])
+        time.sleep(1)
+    proxy_id = proxy_id_list.pop(0)
+    print('代理ip请求异常，更换代理IP:http://' + proxy_id + "/")
+
+
+def get_free_proxy():
+    global proxy_page
+    proxy_page = proxy_page + 1
+    if proxy_page > 8:
+        proxy_page = 1
+    response = requests.get(free_ips + str(proxy_page)).json()
+    print('代理ip请求返回', response["msg"])
+    if response["code"] is 0:
+        data = response["data"]["data"]
+        page = response["data"]["current_page"]
+        print("当前代理页为", page)
+        return data
 
 def get_html2(url):
     appKey = "ZzhrWkg3cmFKQ1lrZTlJQjpBckJwTmw0N2R3c2FaQWc4"
