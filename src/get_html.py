@@ -159,3 +159,8 @@ def get_free_proxy():
 # refresh_proxy_ip()
 # print(get_proxy_url)
 # print(len(config.appkey) is 0)
+
+# 调试代码：
+# with open("company_list.html", encoding="UTF-8", mode='w') as f:
+#     response =get_html('https://www.tianyancha.com/search/oc01/p1', 0)
+#     f.write(response)

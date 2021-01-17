@@ -203,6 +203,8 @@ def get_info(url, count):
 
     return True
 
+
+# 调试代码：
 # 返回第一个方式
 # get_info("https://www.tianyancha.com/company/163975141",0)
 # print(soup.text)
