@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import pymysql
+import config
 
 connect = pymysql.Connect(
-    host='localhost',
-    port=3306,
-    user='root',
-    passwd='123456',
-    db='dev',
-    charset='utf8',
+    host=config.host,
+    port=config.port,
+    user=config.user,
+    passwd=config.passwd,
+    db=config.db,
+    charset=config.charset,
     cursorclass=pymysql.cursors.DictCursor
 )
 cursor = connect.cursor()
@@ -84,8 +85,19 @@ def do_industry(href):
     connect.commit()
 
 
-def get_todo_industry():
-    sql = 'select href from t_industry where flag = false'
+def clear_industry():
+    sql = "truncate table t_industry_copy1"
+    cursor.execute(sql)
+    connect.commit()
+
+def insert_industry(data):
+    sql = "insert  t_industry (`industry`,`href`,`flag`)  VALUES ('%s', '%s', '%d')"
+    cursor.execute(sql % data)
+    connect.commit()
+
+
+def get_todo_industry(start):
+    sql = 'select href from t_industry where flag = false limit '+str(start)+',50'
     cursor.execute(sql)
     todo_href_list = cursor.fetchall()
     return todo_href_list

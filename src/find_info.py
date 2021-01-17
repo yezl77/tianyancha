@@ -9,7 +9,7 @@ def get_info(url, count):
         print("重试超过10次：建议停机检查：", url)
         return True
     html = get_html(url, count)
-    # f = open("z_company1.html", encoding="UTF-8", mode='r')
+    # f = open("z_company5.html", encoding="UTF-8", mode='r')
     # html = f.read()
     soup = BeautifulSoup(html, 'html.parser')
     # print(html)
@@ -144,9 +144,9 @@ def get_info(url, count):
             # print(html)
             refresh_proxy_ip()
             return get_info(url, count+1)
-        table = div.find('table', class_="table -striped-col -border-top-none -breakall")
+        table = div.find('table', class_="table -striped-col -breakall")
         if table is None:
-            print("此页查找不到公司内容 table -striped-col -border-top-none -breakall：", url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
+            print("此页查找不到公司内容 table -striped-col -breakall：", url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
             # print(html)
             refresh_proxy_ip()
             return get_info(url, count+1)
@@ -156,26 +156,33 @@ def get_info(url, count):
             if len(tds) <= 40:
                 print("估计界面有问题：len(tds) <= 40", url)
                 exit(1)
-            zczb1 = tds[1].get_text()  # 注册资本
-            sjzb1 = tds[3].get_text()  # 实缴资本
-            clrq1 = tds[6].get_text()  # 成立日期
-            jyzt1 = tds[8].get_text()  # 经营状态
-            tyshxxdm1 = tds[10].get_text()  # 统一社会信用代码
-            gszc1 = tds[12].get_text()  # 工商注册号
-            nsrsbh1 = tds[14].get_text()  # 纳税人识别号
-            zzjgdm1 = tds[16].get_text()  # 组织机构代码
-            gslx1 = tds[18].get_text()  # 公司类型
-            hy1 = tds[20].get_text()  # 行业
-            hzrq1 = tds[22].get_text()  # 核准日期
-            djjg1 = tds[24].get_text()  # 登记机关
-            yyqx1 = tds[26].get_text()  # 营业期限
-            nsrzz1 = tds[28].get_text()  # 纳税人资质
-            rygm1 = tds[30].get_text()  # 人员规模
-            cbrs1 = tds[32].get_text()  # 参保人数
-            cym1 = tds[34].get_text()   # 曾用名
-            ywmc1 = tds[36].get_text()  # 英文名称
-            zcdz1 = tds[38].get_text()  # 注册地址
-            jyfw1 = tds[40].get_text()  # 经营范围  需要很大的空间 2000
+            jyzt1 = tds[3].get_text()  # 经营状态
+            clrq1 = tds[7].get_text()  # 成立日期
+            zczb1 = tds[9].get_text()  # 注册资本
+            sjzb1 = tds[11].get_text()  # 实缴资本
+            gszc1 = tds[13].get_text()  # 工商注册号
+
+            tyshxxdm1 = tds[15].get_text()  # 统一社会信用代码
+            nsrsbh1 = tds[17].get_text()  # 纳税人识别号
+            zzjgdm1 = tds[19].get_text()  # 组织机构代码
+
+            yyqx1 = tds[21].get_text()  # 营业期限
+            nsrzz1 = tds[23].get_text()  # 纳税人资质
+            hzrq1 = tds[25].get_text()  # 核准日期
+
+            gslx1 = tds[27].get_text()  # 公司类型
+            hy1 = tds[29].get_text()  # 行业
+            rygm1 = tds[31].get_text()  # 人员规模
+            cbrs1 = tds[33].get_text()  # 参保人数
+
+            djjg1 = tds[35].get_text()  # 登记机关
+
+
+
+            cym1 = tds[37].get_text()   # 曾用名
+            ywmc1 = tds[39].get_text()  # 英文名称
+            zcdz1 = tds[41].get_text()  # 注册地址
+            jyfw1 = tds[43].get_text()  # 经营范围  需要很大的空间 2000
             data = (compCh, fddbrr, zczb1, sjzb1, clrq1, jyzt1, tyshxxdm1, gszc1, nsrsbh1, zzjgdm1, gslx1, hy1, hzrq1, djjg1, yyqx1, nsrzz1, rygm1, cbrs1, cym1, ywmc1, zcdz1, jyfw1, url)
 
             print(data)
@@ -195,5 +202,7 @@ def get_info(url, count):
     return True
 
 # 返回第一个方式
-# get_info("11111111")
+# get_info("https://www.tianyancha.com/company/163975141",0)
 # print(soup.text)
+# for i in range(0, 401, 50):
+#     print(i)

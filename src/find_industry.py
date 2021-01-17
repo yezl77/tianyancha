@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
+from mysql import *
 
-
-with open("test1.html", encoding="UTF-8", mode='r') as f, \
-        open("industry.py", encoding="UTF-8", mode='a+') as f1:
+# 先把要爬数据
+# 清空行业表
+clear_industry()
+with open("../html/industry_list.html", encoding="UTF-8", mode='r') as f, \
+        open("industry2.py", encoding="UTF-8", mode='a+') as f1:
     html = f.read()
     soup = BeautifulSoup(html, 'html.parser')
     # print(html)
@@ -15,7 +18,10 @@ with open("test1.html", encoding="UTF-8", mode='r') as f, \
     for ins_a in ins_a_list:
         href = ins_a.get('href')
         ins_name = ins_a.get_text()
-        f1.write(ins_name+'", "')
+        for p in ["", "/p2", "/p3", "/p4", "/p5"]:
+            data = (ins_name, href + p, False)
+            insert_industry(data)
+        # f1.write(href+"\n")
 
 
 

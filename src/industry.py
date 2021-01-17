@@ -1,4 +1,4 @@
-from mysql import *
+
 
 industry_href_list = ["https://www.tianyancha.com/search/oc45", "https://www.tianyancha.com/search/oc44",
                       "https://www.tianyancha.com/search/oc46", "https://www.tianyancha.com/search/oc49",
