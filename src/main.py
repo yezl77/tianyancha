@@ -111,7 +111,7 @@ def get_page_company(page_url):
     print("此页一共爬取公司数: ", len(company_href_list))
 
 
-# 爬取 行业 + 省份直辖市 -> 所有的链接 存到mysql
+# 爬取 行业 + 省份直辖市 -> 市 所有的链接 存到mysql
 def get_city_to_mysql():
     refresh_proxy_ip()
     # 行业
@@ -123,7 +123,7 @@ def get_city_to_mysql():
             get_page_city(province_href)
 
 
-# 爬取 行业 -> 省份直辖市 -> 市区 所有的链接 存到mysql
+# 爬取 行业 -> 省份直辖市 -> 区 所有的链接 存到mysql
 def get_qu_to_mysql():
     todo_city_list = get_todo_industry_province_city()
     for todo_city_url in todo_city_list:
@@ -132,7 +132,7 @@ def get_qu_to_mysql():
         do_industry_province_city(todo_city_url['href'])
 
 
-# 爬取 行业 -> 省份直辖市 -> 市 -> 所有分页 所有的链接 存到mysql
+# 爬取 行业 -> 省份/直辖市 -> 市 ->区县 -> 所有分页 所有的链接 存到mysql
 def get_page_to_mysql():
     todo_url_list = get_todo_industry_province_city_qu()
     while len(todo_url_list) > 0:
@@ -167,11 +167,11 @@ def get_company_info_to_mysql():
 if __name__ == '__main__':
     # 一步 一步  爬取所有天眼查所有公司，极其变态
     # 把数据库表建好，然后跑这个程序，下面五个可以分五条线程 按先后顺序启动 即可
-    # get_city_to_mysql()
-    # get_qu_to_mysql()
-    # get_page_to_mysql()
-    # get_company_to_mysql()
-    get_company_info_to_mysql()
+    get_city_to_mysql()     # 爬取行业-》省份  url
+    get_qu_to_mysql()       # 爬取行业-》省份-》市  -》区  url
+    get_page_to_mysql()     # 爬取行业-》省份-》市 -》区-》分页  url
+    get_company_to_mysql()  # 爬取行业-》省份-》市 -》区-》分页->公司列表  url
+    get_company_info_to_mysql()   # 爬取公司信息  url
 
 
 

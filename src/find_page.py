@@ -12,6 +12,8 @@ def get_company(page_url):
     no_company_div = soup.find('div', class_="no-result-container deep-search-detail")
     # 此条件下确实没有分页信息或者公司
     if no_company_div is not None:
+        print("此条件下确实没有分页信息或者公司")
+        do_industry(page_url)
         return []
     # 如果没有上面的条件，说明被反爬挡住了
     if company_list_div is None:

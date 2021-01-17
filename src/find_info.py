@@ -5,8 +5,8 @@ from get_html import *
 
 
 def get_info(url, count):
-    if count > 50:
-        print("重试超过10次：建议停机检查：", url)
+    if count > config.retries:
+        print("重试超过%d次：建议停机检查："%config.retries, url)
         return True
     html = get_html(url, count)
     # f = open("z_company5.html", encoding="UTF-8", mode='r')
@@ -139,11 +139,14 @@ def get_info(url, count):
             compCh = compChdiv.find('h1', class_="name").get_text()
             print(compCh)
         frdiv=div.find('div', class_="humancompany")
+        fddbrr ="None"
         if frdiv is None:
-            print("此页查找不到公司法人 humancompany：", url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
+            print("此页查找不到公司法人 humancompany：", url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！但先不刷新IP！")
             # print(html)
-            refresh_proxy_ip()
-            return get_info(url, count+1)
+            # refresh_proxy_ip()
+            # return get_info(url, count+1)
+        else:
+            fddbrr = frdiv.find('a', class_="link-click").get_text()  # 法定代表人
         table = div.find('table', class_="table -striped-col -breakall")
         if table is None:
             print("此页查找不到公司内容 table -striped-col -breakall：", url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
@@ -152,7 +155,6 @@ def get_info(url, count):
             return get_info(url, count+1)
         else:
             tds = table.find_all('td')
-            fddbrr = frdiv.find('a', class_="link-click").get_text()  # 法定代表人
             if len(tds) <= 40:
                 print("估计界面有问题：len(tds) <= 40", url)
                 exit(1)

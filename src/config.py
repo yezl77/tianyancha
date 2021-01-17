@@ -11,3 +11,10 @@ user = 'root'
 passwd = '123456'
 db = 'dev'
 charset = 'utf8'
+
+# 爬虫 错误处理配置
+retries = 5
+html_retries = 10
+#爬取全部公司或者96个行业Top100的公司
+craw_style="all"
+# craw_style="top100"

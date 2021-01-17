@@ -21,8 +21,8 @@ ip_port = 'secondtransfer.moguproxy.com:9001'
 
 #蘑菇代理: API 方式请求url的html内容
 def get_html(url, count):
-    if count > 5:
-        print("重试超过5次：建议停机检查：", url)
+    if count > config.html_retries:
+        print("重试超过%d次：建议停机检查：" % config.html_retries, url)
         return ""
         # exit(1)
     # time.sleep(1)
@@ -157,5 +157,5 @@ def get_free_proxy():
 # list = get_todo_industry()
 # get_html('https://www.tianyancha.com/company/2321098091')
 # refresh_proxy_ip()
-print(get_proxy_url)
-print(len(config.appkey) is 0)
+# print(get_proxy_url)
+# print(len(config.appkey) is 0)

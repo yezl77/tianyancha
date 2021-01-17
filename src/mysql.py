@@ -96,8 +96,8 @@ def insert_industry(data):
     connect.commit()
 
 
-def get_todo_industry(start):
-    sql = 'select href from t_industry where flag = false limit '+str(start)+',50'
+def get_todo_industry(start,limit_step):
+    sql = 'select href from t_industry where flag = false limit '+str(start)+','+str(limit_step)
     cursor.execute(sql)
     todo_href_list = cursor.fetchall()
     return todo_href_list
@@ -110,8 +110,14 @@ def get_todo_company():
     return todo_href_list
 
 
+def get_todo_company(start,num):
+    sql = 'select id from t_company where flag = false limit '+str(start)+','+str(num)
+    cursor.execute(sql)
+    todo_href_list = cursor.fetchall()
+    return todo_href_list
+
 def get_todo_company_limit():
-    sql = 'select id from t_company where flag = false limit 300,100'
+    sql = 'select id from t_company where flag = false limit 100'
     cursor.execute(sql)
     todo_href_list = cursor.fetchall()
     return todo_href_list
