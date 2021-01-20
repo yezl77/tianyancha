@@ -167,12 +167,12 @@ def get_company_to_mysql():
 
 # 爬取 行业 -> 省份直辖市 -> 市区 -> 所有分页 -> 公司 -> 公司背景等信息 存到mysql
 def get_company_info_to_mysql():
-    todo_company_list = get_todo_company_limit()
+    todo_company_list = get_company_task()
     while len(todo_company_list) > 0:
         for todo_url in todo_company_list:
-            print("开始爬取未爬的公司：", todo_url['id'])
-            get_info(todo_url['id'], 1)
-        todo_company_list = get_todo_company_limit()
+            print("开始爬取未爬的公司：", todo_url['@hrefs'])
+            get_info(todo_url['@hrefs'], 1)
+        todo_company_list = get_company_task()
 
 
 if __name__ == '__main__':

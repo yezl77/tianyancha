@@ -123,6 +123,18 @@ def get_todo_company_limit():
     todo_href_list = cursor.fetchall()
     return todo_href_list
 
+def get_company_task():
+    sql1 = 'SET @hrefs := 0;  '
+    sql2 = 'UPDATE t_company SET flag = 1, id = (SELECT @hrefs := id)WHERE flag  = 0  LIMIT 1;'
+    sql3= 'SELECT @hrefs;'
+    cursor.execute(sql1)
+    cursor.execute(sql2)
+    cursor.execute(sql3)
+    todo_href_list = cursor.fetchall()
+    connect.commit()
+    return todo_href_list
+    # todo_href_list = cursor.fetchall()
+
 
 def insert_industry_province(href):
     sql = "INSERT IGNORE INTO `t_industry_province`(`href`, `flag`) VALUES ('%s', '%d')"
@@ -247,3 +259,5 @@ def save_to_file():
 
 # save_to_mysql()
 # insert_industry_province_city_qu("ssssss")
+
+# print(get_company_task())

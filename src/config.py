@@ -2,7 +2,7 @@
 # 蘑菇代理 API appkey 为空代表不用代理直接爬
 # appkey = ""
 api_tyle="get_ip_al"
-appkey="a9d22f04b55e42d2a94afe2dfb1e431b"
+appkey="5ec7ce4740e848d4938c81bac17a7d3c"
 
 # mysql 数据库  配置
 #建表见具体表结构: sql/tianyancha.sql
