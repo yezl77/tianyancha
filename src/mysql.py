@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pymysql
 import config
+import time
 
 connect = pymysql.Connect(
     host=config.host,
@@ -9,7 +10,7 @@ connect = pymysql.Connect(
     passwd=config.passwd,
     db=config.db,
     charset=config.charset,
-    cursorclass=pymysql.cursors.DictCursor
+cursorclass=pymysql.cursors.DictCursor
 )
 cursor = connect.cursor()
 
@@ -184,3 +185,65 @@ def do_industry_province_city_qu_page(href):
     sql = 'update t_industry_province_city_qu_page  set flag= true where href = "%s"' % href
     cursor.execute(sql)
     connect.commit()
+
+def get_qu():
+    sql = "select * FROM t_industry_province_city where href like '%oc01%areaCode%'"
+    # sql = "SELECT * FROM t_industry_province_city_qu_copy where href like  '%oc01?%'"
+    cursor.execute(sql)
+    todo_href_list = cursor.fetchall()
+    return todo_href_list
+
+
+def timer(func):
+    def decor(*args):
+        start_time = time.time()
+        func(*args)
+        end_time = time.time()
+        d_time = end_time - start_time
+        print("the running time is : ", d_time)
+
+    return decor
+
+
+@timer
+def save_to_mysql():
+    qu_list = get_qu()
+    print(len(qu_list))
+    for ii in range(1, 96):
+        i = str(ii)
+        if ii<10:
+            i='0'+i
+        print("#####################################################"+i)
+        data = []
+        sql = "INSERT IGNORE INTO `t_industry_province_city_qu`(`href`) VALUES ('%s')"
+        for qu in qu_list:
+            href =qu['href'].replace("oc01","oc"+i)
+            data.append((href))
+
+            sql = "INSERT IGNORE INTO `t_industry_province_city_qu`(`href`,`flag`) VALUES ('%s','%d')"
+            print(sql%(href, False))
+            # cursor.execute(sql%(href, False))
+        # cursor.executemany(sql, data)
+        # connect.commit()
+
+        print('OK')
+
+
+@timer
+def save_to_file():
+    qu_list = get_qu()
+    print(len(qu_list))
+    with open("qu_list1.csv", encoding="UTF-8", mode='w') as f:
+        for ii in range(1, 96):
+            i = str(ii)
+            if ii<10:
+                i='0'+i
+            print("#####################################################"+i)
+            # data = []
+            for qu in qu_list:
+                # print(qu['href'])
+                href =qu['href'].replace("oc01","oc"+i)
+                f.write('"%s","%d"'%(href, 0)+"\n")
+
+# save_to_mysql()
+# insert_industry_province_city_qu("ssssss")

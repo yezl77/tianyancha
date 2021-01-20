@@ -5,7 +5,7 @@ import config
 
 cursor = 0
 
-get_proxy_url = "http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=%s&count=5&expiryDate=0&format=2&newLine=1"%config.appkey
+get_proxy_url = "http://piping.mogumiao.com/proxy/api/%s?appKey=%s&count=5&expiryDate=0&format=2&newLine=1"%(config.api_tyle,config.appkey)
 proxy_id_list = []
 proxy_id = ""
 proxy_page = 0
@@ -28,6 +28,8 @@ def get_html(url, count):
     # time.sleep(1)
     print("爬取此网页：", url, "次数：", count, " 代理IP：", proxy_id)
     # 代理 IP ,具体刷新获取代理IP需要自己实现下面的refresh_proxy_ip() 函数
+    if len(proxy_id) ==0 :
+        refresh_proxy_ip()
     proxy = {
         'http': 'http://' + proxy_id,
         'https': 'https://' + proxy_id
@@ -46,11 +48,15 @@ def get_html(url, count):
         "Upgrade-Insecure-Requests": "1",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36"
     }
+    # if len(config.appkey) is 0:
+    #     response = requests.get(url, headers=headers)
+    # else:
+    #     response = requests.get(url, headers=headers, proxies=proxy, timeout=5)
     try:
         if len(config.appkey) is 0:
             response = requests.get(url, headers=headers)
         else:
-            response = requests.get(url, headers=headers, proxies=proxy, timeout=5)
+            response = requests.get(url, headers=headers, proxies=proxy, timeout=10)
     except BaseException:
         print("异常发生")
         # 这里没有对异常情况作具体处理，只是直接换代理IP 重新请求 就完事昂
@@ -115,7 +121,8 @@ def refresh_proxy_ip():
             time.sleep(3)
             response_text = requests.get(get_proxy_url).text
         for p_id in response_text.split(" "):
-            proxy_id_list.append(p_id)
+            if len(p_id) >0:
+                proxy_id_list.append(p_id)
 
     proxy_id = proxy_id_list.pop(0)
     # proxy_id = requests.get(get_proxy_url).text.replace(" ", "")

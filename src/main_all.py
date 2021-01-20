@@ -2,9 +2,10 @@
 from industry import *
 from find_info import *
 
+
 # 爬取 行业 -> 省份直辖市 链接
 def get_page_province(industry_url):
-    html = get_html(industry_url,0)
+    html = get_html(industry_url, 0)
     soup = BeautifulSoup(html, 'html.parser')
 
     # 行业 -> 省份直辖市
@@ -14,7 +15,7 @@ def get_page_province(industry_url):
         refresh_proxy_ip()
         return get_page_province(industry_url)
     page_a_list = div.find_all('a')
-    province= []
+    province = []
     for page_a in page_a_list:
         province_href = page_a.get('href')
         province.append(province_href[38:])
@@ -38,6 +39,7 @@ def get_page_city(province_href):
         insert_industry_province_city(city_href)
         # qu_list.append(qu_href)
 
+
 # 爬取 行业 -> 省份直辖市 -> 市 -> 区 链接
 def get_page_qu(city_href):
     html = get_html(city_href, 0)
@@ -56,7 +58,9 @@ def get_page_qu(city_href):
 
 
 # 爬取 行业 -> 省份直辖市 -> 市 -> 区 -> 分页链接
-def get_page(qu_href):
+def get_page(qu_href,count):
+    if count>config.retries:
+        return True
     html = get_html(qu_href, 0)
     soup = BeautifulSoup(html, 'html.parser')
     div = soup.find('div', class_=" search-pager")
@@ -67,23 +71,29 @@ def get_page(qu_href):
         return True
     # 如果没有上面的条件，说明被反爬挡住了
     if company_list_div is None:
-        print("此页查找不到分页 scope：", qu_href, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
+        print("此页查找不到分页 ：", qu_href, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
         refresh_proxy_ip()
-        return get_page(qu_href)
+        return get_page(qu_href,count+1)
     # 如果公司列表的不为空，而分页为空，说明只有这一页
     if div is None:
         insert_industry_province_city_qu_page(qu_href)
         return True
     a_list = div.find_all('a')
     page_list = []
+    page_count = 0
     for page_a in a_list:
+        if page_count > 4:
+            break
+        page_count += 1
         page_href = page_a.get('href')
-        # print("县区:",qu_href)
-        insert_industry_province_city_qu_page(qu_href)
+        print("分页:",page_href)
+        insert_industry_province_city_qu_page(page_href)
         # qu_list.append(qu_href)
 
 
-def get_page_company(page_url):
+def get_page_company(page_url,count):
+    if count>config.retries:
+        return True
     html = get_html(page_url, 0)
     soup = BeautifulSoup(html, 'html.parser')
     # print(html)
@@ -97,9 +107,10 @@ def get_page_company(page_url):
         return True
     # 如果没有上面的条件，说明被反爬挡住了
     if company_list_div is None:
-        print("此页查找不到分页 scope：", page_url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
+        print("此页查找不到公司列表：", page_url, "注意这个必须要查到哦哦哦哦哦哦哦！！！！！！！！！！！")
+        # return True
         refresh_proxy_ip()
-        return get_page_company(page_url)
+        return get_page_company(page_url,count+1)
     a_list = company_list_div.find_all('a')
 
     if a_list is not None:
@@ -138,7 +149,7 @@ def get_page_to_mysql():
     while len(todo_url_list) > 0:
         for todo_url in todo_url_list:
             print("开始爬取未爬的区县：", todo_url['href'])
-            get_page(todo_url['href'])
+            get_page(todo_url['href'],1)
             do_industry_province_city_qu(todo_url['href'])
         todo_url_list = get_todo_industry_province_city_qu()
 
@@ -149,7 +160,7 @@ def get_company_to_mysql():
     while len(todo_page_list) > 0:
         for todo_url in todo_page_list:
             print("开始爬取未爬的分页：", todo_url['href'])
-            get_page_company(todo_url['href'])
+            get_page_company(todo_url['href'],1)
             do_industry_province_city_qu_page(todo_url['href'])
         todo_page_list = get_todo_industry_province_city_qu_page()
 
@@ -167,11 +178,11 @@ def get_company_info_to_mysql():
 if __name__ == '__main__':
     # 一步 一步  爬取所有天眼查所有公司，极其变态
     # 把数据库表建好，然后跑这个程序，下面五个可以分五条线程 按先后顺序启动 即可
-    get_city_to_mysql()     # 爬取行业-》省份  url
-    get_qu_to_mysql()       # 爬取行业-》省份-》市  -》区  url
-    get_page_to_mysql()     # 爬取行业-》省份-》市 -》区-》分页  url
-    get_company_to_mysql()  # 爬取行业-》省份-》市 -》区-》分页->公司列表  url
+    # get_city_to_mysql()     # 爬取行业-》省份  url
+    # get_qu_to_mysql()       # 爬取行业-》省份-》市  -》区  url
+
+    # 以上已经完成并存云数据库，不必重复爬取
+
+    # get_page_to_mysql()  # 爬取行业-》省份-》市 -》区-》分页  url
+    # get_company_to_mysql()  # 爬取行业-》省份-》市 -》区-》分页->公司列表  url
     get_company_info_to_mysql()   # 爬取公司信息  url
-
-
-
