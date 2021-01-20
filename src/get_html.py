@@ -56,7 +56,7 @@ def get_html(url, count):
         if len(config.appkey) is 0:
             response = requests.get(url, headers=headers)
         else:
-            response = requests.get(url, headers=headers, proxies=proxy, timeout=10)
+            response = requests.get(url, headers=headers, proxies=proxy, timeout=config.request_timeout)
     except BaseException:
         print("异常发生")
         # 这里没有对异常情况作具体处理，只是直接换代理IP 重新请求 就完事昂
